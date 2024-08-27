@@ -1,0 +1,34 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+
+<h1>{{ employee.id }}</h1>
+
+<h2>Edit Skill</h2>
+<table class="table table-borderless">
+    <thread>
+        <th>カテゴリ</th>
+        <th>スキル名</th>
+        <th>削除</th>
+    </thread>
+    <tbody>
+    {% for employee_skill in employee.employee_skills.all %}
+        <tr>
+            <td>{{ employee_skill.skill.category }}</td>
+            <td>{{ employee_skill.skill }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<form method="POST" name="form">
+    {% csrf_token %}
+    <b>Category</b><br>
+    <b>Skill</b>
+    <input type="hidden" id="id_employee" name="employee" value="{{ employee.id }}">
+    {{ form.skill }}<br>
+    <button type="submit">ADD</button>
+</form>
+
+{% endblock %}

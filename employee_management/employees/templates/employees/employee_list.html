@@ -1,0 +1,24 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+
+<h1>社員一覧</h1>
+
+<table class="table table-borderless">
+    <thread>
+        <th>id</th>
+        <th>first name</th>
+        <th>last name</th>
+    </thread>
+    <tbody>
+    {% for employee in employees %}
+        <tr>
+            <td><a href="{% url 'employees:employee_detail' employee.pk %}">{{ employee.id }}</a></td>
+            <td>{{ employee.first_name }}</td>
+            <td>{{ employee.last_name }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'employees/base.html' %}
+
+{% block content %}
+
+<h1>Detail</h1>
+
+<table class="table table-borderless">
+    <tr><th>ID</th><td>{{ employee.id }}</td></tr>
+    <tr><th>姓</th><td>{{ employee.first_name }}</td></tr>
+    <tr><th>名</th><td>{{ employee.last_name }}</td></tr>
+    <tr><th>生年月日</th><td>{{ employee.birth_date }}</td></tr>
+</table>
+
+<h2>保有スキル</h2>
+<a href="{% url 'employees:edit_skills' employee.id %}">Edit</a>
+
+<table class="table table-borderless">
+    <thread>
+        <th>Category</th>
+        <th>Skill</th>
+    </thread>
+    {% regroup employee.employee_skills.all by skill.category as grouped_skills %}
+    <tbody>
+        {% for category, skills in skills_by_category.items %}
+        <tr>
+            <td>{{ category }}</td>
+            <td>{{ skills|join:", " }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
