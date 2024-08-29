@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>{{ employee.id }}</h1>
+<h1>{{ employee.first_name }}</h1>
 
 <h2>Edit Skill</h2>
 <table class="table table-borderless">
@@ -12,7 +12,7 @@
         <th>削除</th>
     </thread>
     <tbody>
-    {% for employee_skill in employee.employee_skills.all %}
+    {% for employee_skill in employee_skills %}
         <tr>
             <td>{{ employee_skill.skill.category }}</td>
             <td>{{ employee_skill.skill }}</td>
@@ -24,11 +24,46 @@
 
 <form method="POST" name="form">
     {% csrf_token %}
-    <b>Category</b><br>
-    <b>Skill</b>
+    <b>Category</b>
+    <select id="skill-category" class="skill-category">
+        <option value="">--Select Category--</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+
     <input type="hidden" id="id_employee" name="employee" value="{{ employee.id }}">
-    {{ form.skill }}<br>
+    <tr>
+        <th>
+            <label for="id_skill">Skill:</label>
+        </th>
+        <td>
+            <select name="skill" class="form-control" required id="id_skill">
+                <option value="" selected>---------</option>
+                {% for skill in skills%}
+                    <option value="{{ skill.id }}">{{ skill.name }}</option>
+                {% endfor %}
+            </select>
+        </td>
+    </tr>
     <button type="submit">ADD</button>
 </form>
+
+<script>
+    document.querySelector('.skill-category').addEventListener('change', function() {
+        let categoryId = this.value;
+
+        // if (categoryId) {
+        $('#id_skill').empty();
+        $('#id_skill').append('<option value="">---------</option>');
+        fetch(`get-skill?category=${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                $.each(data.skills, function(index, skill) {
+                    $('#id_skill').append('<option value="' + skill.id + '">' + skill.name + '</option>');
+                });
+            })
+    });
+</script>
 
 {% endblock %}
